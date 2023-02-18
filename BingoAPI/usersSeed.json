@@ -1,0 +1,57 @@
+[
+  {
+    "Id": "e563aa88-86b1-4c69-a0f8-496b53c9ac26",
+    "FullName": "John Smith",
+    "UserName": "jsmith@example.com",
+    "Email": "jsmith@example.com",
+    "EmailConfirmed": false,
+    "PasswordHash": "password123",
+    "PhoneNumber": "+1-555-123-4567",
+    "PhoneNumberConfirmed": false,
+    "GameSchedule": "2023-03-01T14:30:00Z"
+  },
+  {
+    "Id": "d4a4a0ca-d7cb-4e8f-8c58-34535c9eab5b",
+    "FullName": "Jane Doe",
+    "UserName": "jdoe@example.com",
+    "Email": "jdoe@example.com",
+    "EmailConfirmed": false,
+    "PasswordHash": "secret",
+    "PhoneNumber": "+1-555-987-6543",
+    "PhoneNumberConfirmed": false,
+    "GameSchedule": "2023-03-15T17:00:00Z"
+  },
+  {
+    "Id": "87d8fde7-99da-4a9c-9cfc-64bfc84d7196",
+    "FullName": "Bob Johnson",
+    "UserName": "bjohnson@example.com",
+    "Email": "bjohnson@example.com",
+    "EmailConfirmed": false,
+    "PasswordHash": "myPass",
+    "PhoneNumber": "+1-555-555-1212",
+    "PhoneNumberConfirmed": false,
+    "GameSchedule": "2023-03-10T10:00:00Z"
+  },
+  {
+    "Id": "1e9deac9-7e9d-46d6-997a-32efdf6d5f6c",
+    "FullName": "Alice Smith",
+    "UserName": "asmith@example.com",
+    "Email": "asmith@example.com",
+    "EmailConfirmed": false,
+    "PasswordHash": "paSSword",
+    "PhoneNumber": "+1-555-999-1212",
+    "PhoneNumberConfirmed": false,
+    "GameSchedule": "2023-03-05T12:30:00Z"
+  },
+  {
+    "Id": "af690bfe-f82e-4856-b8dc-1075a5f5c6b9",
+    "FullName": "Tom Lee",
+    "UserName": "tlee@example.com",
+    "Email": "tlee@example.com",
+    "EmailConfirmed": false,
+    "PasswordHash": "qwerty123",
+    "PhoneNumber": "+1-555-444-1212",
+    "PhoneNumberConfirmed": false,
+    "GameSchedule": "2023-03-20T14:00:00Z"
+  }
+]
