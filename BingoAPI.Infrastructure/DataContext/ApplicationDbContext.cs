@@ -7,6 +7,8 @@ using System.Text.Json;
 namespace BingoAPI.Infrastructure.DataContext;
 public class ApplicationDbContext : IdentityDbContext<ApplicationUser, ApplicationRole, Guid>
 {
+    public DbSet<Friendship> Friendships { get; set; }
+
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
     {
@@ -18,9 +20,22 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser, Applicati
         var users = GetUserSeedData("usersSeed.json");
 
         builder.Entity<ApplicationUser>().HasData(users);
+
+        builder.Entity<Friendship>()
+         .HasKey(f => new { f.UserId, f.FriendId });
+
+        builder.Entity<Friendship>()
+            .HasOne(f => f.User)
+            .WithMany()
+            .OnDelete(DeleteBehavior.Restrict);
+
+        builder.Entity<Friendship>()
+            .HasOne(f => f.Friend)
+            .WithMany()
+            .OnDelete(DeleteBehavior.Restrict);
     }
 
-    private List<ApplicationUser> GetUserSeedData(string fileName)
+    private static List<ApplicationUser> GetUserSeedData(string fileName)
     {
         List<ApplicationUser>? usersList;
 
