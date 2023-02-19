@@ -24,6 +24,26 @@ public class UsersService : IUsersService
         return _mapper.Map<List<UserResponse>>(appUsersList);
     }
 
+    public async Task<List<UserResponse>> GetMatchesGameSchedule(string userName, string? gameTime=null)
+    {
+        var user = await _usersRepository.FindUserByEmail(userName);
+        if (user is null)
+            throw new ArgumentException($"User not found by Username:{userName}");
+
+        DateTime date;
+        if (string.IsNullOrEmpty(gameTime?.Trim()))
+            date = user.GameSchedule ?? DateTime.UtcNow;
+        else if (!DateTime.TryParse(gameTime, out date))
+            throw new ArgumentException($"Invalid date format:{gameTime}");
+
+        var matchesUsers = (await _usersRepository.FindAllUsers())
+                .Where(appUser => appUser.GameSchedule == date)
+                .ToList();
+        matchesUsers.Remove(user);
+
+        return _mapper.Map<List<UserResponse>>(matchesUsers);
+    }
+
     public async Task<List<UserResponse>> GetUsersOrderedByGameSchedule(string userName)
     {
         var appUsersList = (await _usersRepository.FindAllUsers())
@@ -70,4 +90,6 @@ public class UsersService : IUsersService
 
         throw new ArgumentException($"Invalid format of data:{gameTime}");
     }
+
+    public async Task SignOut() => await _usersRepository.SignOut();
 }

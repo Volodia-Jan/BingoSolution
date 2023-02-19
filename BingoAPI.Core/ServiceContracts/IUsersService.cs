@@ -11,5 +11,9 @@ public interface IUsersService
 
     Task<List<UserResponse>> GetUsersOrderedByGameSchedule(string userName);
 
+    Task<List<UserResponse>> GetMatchesGameSchedule(string userName, string? gameTime = null);
+
+    Task SignOut();
+
     Task<UserResponse> SetGameSchedule(string username, string gameTime);
 }
