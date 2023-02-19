@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
+using BingoAPI.Core.Dtos;
 
 namespace BingoAPI.StartupExtentions;
 
@@ -22,8 +23,10 @@ public static class ServicesExtention
         });
 
         services.AddScoped<IUsersService, UsersService>();
+        services.AddScoped<IFriendshipsService, FriendshipService>();
         services.AddScoped<IAccountService, AccountService>();
         services.AddScoped<IUsersRepository, UsersRepository>();
+        services.AddScoped<IFriendshipRepository, FriendshipRepository>();
         services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
         services.AddIdentity<ApplicationUser, ApplicationRole>(options =>
