@@ -24,4 +24,12 @@ public class AccountController : ControllerBase
     [HttpPost("register")]
     public async Task<ActionResult<UserResponse>> RegisterUser(RegisterDto registerDto)
         => await _usersService.Register(registerDto);
+
+    [HttpGet("sign-out")]
+    public async Task<ActionResult> SignUserOut()
+    {
+        await _usersService.SignOut();
+
+        return Ok();
+    }
 }
