@@ -37,7 +37,7 @@ public class AccountService : IAccountService
         var user = await _usersRepository.SaveUser(_mapper.Map<ApplicationUser>(registerDto), registerDto.Password);
 
         if (user is null)
-            throw new ArgumentException("Something went wrong please try again later!");
+            throw new ArgumentException("Something went wrong during registration please try again later!");
 
         return _mapper.Map<UserResponse>(user);
     }

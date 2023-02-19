@@ -1,9 +1,7 @@
 ﻿using AutoMapper;
 using BingoAPI.Core.Dtos;
-using BingoAPI.Core.Entities;
 using BingoAPI.Core.RepositoryContracts;
 using BingoAPI.Core.ServiceContracts;
-using BingoAPI.Core.ValidationHelper;
 
 namespace BingoAPI.Core.Services;
 public class UsersService : IUsersService
