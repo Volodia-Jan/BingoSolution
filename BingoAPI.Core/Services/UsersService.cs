@@ -71,6 +71,9 @@ public class UsersService : IUsersService
     public async Task<UserResponse> Register(RegisterDto registerDto)
     {
         ModelValidator.Validate(registerDto);
+        if (await _usersRepository.FindUserByEmail(registerDto.Email) is not null)
+            throw new ArgumentException($"{registerDto.Email} is already registered");
+
         var user = await _usersRepository.SaveUser(_mapper.Map<ApplicationUser>(registerDto), registerDto.Password);
 
         if (user is null)
