@@ -29,11 +29,6 @@ public class UsersRepository : IUsersRepository
 
     public async Task<ApplicationUser?> FindUserById(Guid id) => await _userManager.FindByIdAsync(id.ToString());
 
-    public Task<ApplicationUser?> FindUserByName(string username)
-    {
-        throw new NotImplementedException();
-    }
-
     public async Task<ApplicationUser?> Login(string email, string password)
     {
         var result = await _signInManager.PasswordSignInAsync(email, password, isPersistent: false, lockoutOnFailure: false);

@@ -8,7 +8,6 @@ public interface IUsersRepository
     Task<ApplicationUser?> UpdateUserGameSchedule(string userEmail, DateTime dateTime);
     Task<List<ApplicationUser>> FindAllUsers();
     Task<ApplicationUser?> FindUserById(Guid id);
-    Task<ApplicationUser?> FindUserByName(string username);
     Task<ApplicationUser?> FindUserByEmail(string email);
     Task<bool> DeleteUserById(Guid id);
     Task SignOut();
