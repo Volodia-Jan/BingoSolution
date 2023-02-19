@@ -32,8 +32,26 @@ public class UsersController : ControllerBase
     }
 
     [AuthorizeUser]
+    [HttpGet("game-schedule/matches")]
+    public async Task<ActionResult<IEnumerable<UserResponse>>> GetMatchesGameSchedule()
+    {
+        var userName = User.Identity?.Name;
+
+        return await _usersService.GetMatchesGameSchedule(userName);
+    }
+
+    [AuthorizeUser]
+    [HttpPost("game-schedule/matches")]
+    public async Task<ActionResult<IEnumerable<UserResponse>>> GetMatchesGameSchedule([FromQuery]string gameTime)
+    {
+        var userName = User.Identity?.Name;
+
+        return await _usersService.GetMatchesGameSchedule(userName, gameTime);
+    }
+
+    [AuthorizeUser]
     [HttpPatch("game-schedule/update")]
-    public async Task<ActionResult<UserResponse>> UpdateUserGameSchedule([FromBody]string gameTime)
+    public async Task<ActionResult<UserResponse>> UpdateUserGameSchedule([FromForm]string gameTime)
     {
         var userName = User.Identity?.Name;
 
