@@ -57,31 +57,6 @@ public class UsersService : IUsersService
         return _mapper.Map<List<UserResponse>>(appUsersList);
     }
 
-    public async Task<UserResponse> Login(LoginDto loginDto)
-    {
-        ModelValidator.Validate(loginDto);
-        var user = await _usersRepository.Login(loginDto.Email, loginDto.Password);
-
-        if (user is null)
-            throw new ArgumentException("Invalid username or password");
-
-        return _mapper.Map<UserResponse>(user);
-    }
-
-    public async Task<UserResponse> Register(RegisterDto registerDto)
-    {
-        ModelValidator.Validate(registerDto);
-        if (await _usersRepository.FindUserByEmail(registerDto.Email) is not null)
-            throw new ArgumentException($"{registerDto.Email} is already registered");
-
-        var user = await _usersRepository.SaveUser(_mapper.Map<ApplicationUser>(registerDto), registerDto.Password);
-
-        if (user is null)
-            throw new ArgumentException("Something went wrong please try again later!");
-
-        return _mapper.Map<UserResponse>(user);
-    }
-
     public async Task<UserResponse> SetGameSchedule(string username, string gameTime)
     {
         if (DateTime.TryParse(gameTime, out DateTime date))
@@ -93,6 +68,4 @@ public class UsersService : IUsersService
 
         throw new ArgumentException($"Invalid format of data:{gameTime}");
     }
-
-    public async Task SignOut() => await _usersRepository.SignOut();
 }

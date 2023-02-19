@@ -22,6 +22,7 @@ public static class ServicesExtention
         });
 
         services.AddScoped<IUsersService, UsersService>();
+        services.AddScoped<IAccountService, AccountService>();
         services.AddScoped<IUsersRepository, UsersRepository>();
         services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 

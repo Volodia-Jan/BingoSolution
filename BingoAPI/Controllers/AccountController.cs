@@ -11,31 +11,31 @@ namespace BingoAPI.Controllers;
 [Route("[controller]")]
 public class AccountController : ControllerBase
 {
-    private readonly IUsersService _usersService;
+    private readonly IAccountService _accountService;
 
-    public AccountController(IUsersService usersService)
+    public AccountController(IAccountService accountService)
     {
-        _usersService = usersService;
+        _accountService = accountService;
     }
 
     [HttpPost("login")]
     [SwaggerOperation(Summary = "Returns logged in user")]
     [SwaggerResponse(StatusCodes.Status200OK, "OK", typeof(UserResponse))]
     public async Task<ActionResult<UserResponse>> LoginUser(LoginDto loginDto)
-        => await _usersService.Login(loginDto);
+        => await _accountService.Login(loginDto);
 
     [HttpPost("register")]
     [SwaggerOperation(Summary = "Returns registered user")]
     [SwaggerResponse(StatusCodes.Status200OK, "OK", typeof(UserResponse))]
     public async Task<ActionResult<UserResponse>> RegisterUser(RegisterDto registerDto)
-        => await _usersService.Register(registerDto);
+        => await _accountService.Register(registerDto);
 
     [HttpGet("sign-out")]
     [SwaggerOperation(Summary = "Performs a user exit")]
     [SwaggerResponse(StatusCodes.Status200OK, "OK", typeof(UserResponse))]
     public async Task<ActionResult> SignUserOut()
     {
-        await _usersService.SignOut();
+        await _accountService.SignOut();
 
         return Ok();
     }
