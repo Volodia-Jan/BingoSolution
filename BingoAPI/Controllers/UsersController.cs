@@ -2,74 +2,81 @@
 using BingoAPI.Core.ServiceContracts;
 using BingoAPI.Filters.TypeFilters;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace BingoAPI.Controllers;
 
 [Authorize]
+[AuthorizeUser]
 [ApiController]
 [Route("[controller]")]
 public class UsersController : ControllerBase
 {
     private readonly IUsersService _usersService;
+    private readonly IFriendshipsService _friendshipsService;
 
-    public UsersController(IUsersService usersService)
+    public UsersController(IUsersService usersService, IFriendshipsService friendshipsService)
     {
         _usersService = usersService;
+        _friendshipsService = friendshipsService;
     }
 
     [HttpGet]
     [SwaggerOperation(Summary = "Returns all users from Db")]
     [SwaggerResponse(StatusCodes.Status200OK, "OK", typeof(IEnumerable<UserResponse>))]
+    [SwaggerResponse(StatusCodes.Status401Unauthorized, "Unauthorized")]
     public async Task<ActionResult<IEnumerable<UserResponse>>> GetAllUsers() 
         => await _usersService.GetAllUsers();
 
-    [AuthorizeUser]
-    [HttpGet("game-schedule")]
-    [SwaggerOperation(Summary = "Returns all users sorted by game schedule")]
+    [HttpGet("friends")]
+    [SwaggerOperation(Summary = "Returns all authorized user friends")]
     [SwaggerResponse(StatusCodes.Status200OK, "OK", typeof(IEnumerable<UserResponse>))]
-    [SwaggerResponse(StatusCodes.Status400BadRequest, "Bad Request")]
-    public async Task<ActionResult<IEnumerable<UserResponse>>> GetGameSchedule()
+    [SwaggerResponse(StatusCodes.Status401Unauthorized, "Unauthorized")]
+    public async Task<ActionResult<IEnumerable<UserResponse>>> GetAllUserFriends()
     {
-        var userName = User.Identity?.Name;
+        var username = User.Identity?.Name;
 
-        return await _usersService.GetUsersOrderedByGameSchedule(userName);
+        return await _friendshipsService.GetAllUserFriends(username);
     }
 
-    [AuthorizeUser]
-    [HttpGet("game-schedule/matches")]
-    [SwaggerOperation(Summary = "Returns all users that are matches with authorized user game schedule if it's null it uses current date")]
+    [HttpGet("friend-requests")]
+    [SwaggerOperation(Summary = "Returns all authorized user friend-requests")]
     [SwaggerResponse(StatusCodes.Status200OK, "OK", typeof(IEnumerable<UserResponse>))]
-    [SwaggerResponse(StatusCodes.Status400BadRequest, "Bad Request")]
-    public async Task<ActionResult<IEnumerable<UserResponse>>> GetMatchesGameSchedule()
+    [SwaggerResponse(StatusCodes.Status401Unauthorized, "Unauthorized")]
+    public async Task<ActionResult<IEnumerable<UserResponse>>> GetAllUserFriendRequests()
     {
-        var userName = User.Identity?.Name;
+        var username = User.Identity?.Name;
 
-        return await _usersService.GetMatchesGameSchedule(userName);
+        return await _friendshipsService.GetAllFriendRequests(username);
     }
 
-    [AuthorizeUser]
-    [HttpPost("game-schedule/matches")]
-    [SwaggerOperation(Summary = "Returns all users that are matched with given date")]
+    [HttpPost("friends")]
+    [SwaggerOperation(Summary = "Send friend request")]
     [SwaggerResponse(StatusCodes.Status200OK, "OK", typeof(IEnumerable<UserResponse>))]
+    [SwaggerResponse(StatusCodes.Status401Unauthorized, "Unauthorized")]
     [SwaggerResponse(StatusCodes.Status400BadRequest, "Bad Request")]
-    public async Task<ActionResult<IEnumerable<UserResponse>>> GetMatchesGameSchedule([FromQuery]string gameTime)
+    public async Task<ActionResult> AddFriend(FriendDto friendDto)
     {
-        var userName = User.Identity?.Name;
+        var username = User.Identity?.Name;
 
-        return await _usersService.GetMatchesGameSchedule(userName, gameTime);
+        bool isAdded = await _friendshipsService.AddFriend(username, friendDto.FriendUserName);
+
+        return isAdded ? Ok("Successful sending friend request") : BadRequest("Something went wrong during sending friend request");
     }
 
-    [AuthorizeUser]
-    [HttpPatch("game-schedule/update")]
-    [SwaggerOperation(Summary = "Sets a game schedule of authorized user")]
-    [SwaggerResponse(StatusCodes.Status200OK, "OK", typeof(UserResponse))]
+    [HttpPatch("friends")]
+    [SwaggerOperation(Summary = "Accept friend")]
+    [SwaggerResponse(StatusCodes.Status200OK, "OK", typeof(IEnumerable<UserResponse>))]
+    [SwaggerResponse(StatusCodes.Status401Unauthorized, "Unauthorized")]
     [SwaggerResponse(StatusCodes.Status400BadRequest, "Bad Request")]
-    public async Task<ActionResult<UserResponse>> UpdateUserGameSchedule([FromForm]string gameTime)
+    public async Task<ActionResult> AcceptFriend(FriendDto friendDto)
     {
-        var userName = User.Identity?.Name;
+        var username = User.Identity?.Name;
 
-        return await _usersService.SetGameSchedule(userName, gameTime);
+        bool isAccepted = await _friendshipsService.AcceptFriend(username, friendDto.FriendUserName);
+
+        return isAccepted ? Ok("Successful operation") : BadRequest("Something went wrong during accepting friend request");
     }
 }

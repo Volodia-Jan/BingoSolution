@@ -36,14 +36,10 @@ public class UsersRepository : IUsersRepository
 
     public async Task SignOut() => await _signInManager.SignOutAsync();
 
-    public async Task<ApplicationUser?> UpdateUserGameSchedule(string userEmail, DateTime dateTime)
+    public async Task<ApplicationUser?> UpdateUser(ApplicationUser user)
     {
-        var userToUpdate = await FindUserByEmail(userEmail);
-        if (userToUpdate is null) return null;
+        var result = await _userManager.UpdateAsync(user);
 
-        userToUpdate.GameSchedule = dateTime;
-        var result = await _userManager.UpdateAsync(userToUpdate);
-        
-        return result.Succeeded ? userToUpdate : null;
+        return result.Succeeded ? user : null;
     }
 }
