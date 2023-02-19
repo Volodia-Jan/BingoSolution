@@ -5,7 +5,7 @@ namespace BingoAPI.Core.Dtos;
 public class RegisterDto
 {
     [Required(ErrorMessage = "{0} can not be empty")]
-    public string? UserName { get; set; }
+    public string? FullName { get; set; }
 
     [Required(ErrorMessage = "{0} can not be empty")]
     [EmailAddress(ErrorMessage = "Invalid format of email address")]

@@ -38,6 +38,7 @@ public class UsersRepository : IUsersRepository
 
     public async Task<ApplicationUser?> SaveUser(ApplicationUser user, string password)
     {
+        user.Id = Guid.NewGuid();
         var result = await _userManager.CreateAsync(user, password);
 
         return result.Succeeded ? user : null;

@@ -11,7 +11,7 @@ public class AutoMapper : Profile
         CreateMap<RegisterDto, ApplicationUser>()
             .ForMember(dest => dest.UserName, option => option.MapFrom(src => src.Email))
             .ForMember(dest => dest.Email, option => option.MapFrom(src => src.Email))
-            .ForMember(dest => dest.FullName, option => option.MapFrom(src => src.UserName));
+            .ForMember(dest => dest.FullName, option => option.MapFrom(src => src.FullName));
     }
 }
 
