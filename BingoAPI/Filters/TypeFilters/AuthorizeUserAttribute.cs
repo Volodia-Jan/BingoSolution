@@ -17,7 +17,7 @@ public class AuthorizeUserAttribute : TypeFilterAttribute
 
             if (string.IsNullOrEmpty(userName) || !(context.HttpContext.User.Identity?.IsAuthenticated ?? true))
             {
-                context.Result = new BadRequestObjectResult("Username is null or you are not authorized");
+                context.Result = new UnauthorizedObjectResult("Username is null or you are not authorized");
             }
 
             return Task.CompletedTask;
