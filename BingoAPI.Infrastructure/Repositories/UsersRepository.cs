@@ -14,20 +14,10 @@ public class UsersRepository : IUsersRepository
         _userManager = userManager;
         _signInManager = signInManager;
     }
-    public async Task<bool> DeleteUserById(Guid id)
-    {
-        var userToDelete = await FindUserById(id);
-        if (userToDelete is null) return false;
-        var result = await _userManager.DeleteAsync(userToDelete);
-
-        return result.Succeeded;
-    }
 
     public async Task<List<ApplicationUser>> FindAllUsers() => await _userManager.Users.ToListAsync();
 
     public async Task<ApplicationUser?> FindUserByEmail(string email) => await _userManager.FindByEmailAsync(email);
-
-    public async Task<ApplicationUser?> FindUserById(Guid id) => await _userManager.FindByIdAsync(id.ToString());
 
     public async Task<ApplicationUser?> Login(string email, string password)
     {
