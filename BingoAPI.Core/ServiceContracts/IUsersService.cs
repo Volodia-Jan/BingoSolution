@@ -10,4 +10,6 @@ public interface IUsersService
     Task<List<UserResponse>> GetMatchesGameSchedule(string userName, string? gameTime = null);
 
     Task<UserResponse> SetGameSchedule(string username, string gameTime);
+
+    Task<UserResponse> SetGamePrivacy(string username, bool privacy);
 }
